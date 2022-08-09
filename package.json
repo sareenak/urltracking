@@ -5,9 +5,8 @@
   "main": "index.js",
   "type":"module",
   "scripts": {
-    "start": "nodemon server",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+    "start": "nodemon server"
+    },
   "keywords": [],
   "author": "",
   "license": "ISC",
