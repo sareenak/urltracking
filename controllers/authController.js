@@ -7,4 +7,4 @@ const login =(req,res)=>{
 const updateUser =(req,res)=>{
     res.send('update user')
 }
-export {register,login,updateUser}
+export  {register,login,updateUser}
