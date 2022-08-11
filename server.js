@@ -2,16 +2,20 @@ import express from 'express'
 const app=express()
 import dotenv from 'dotenv'
 dotenv.config()
+//db 
 import connectDB from './db/connect.js'
+//Authenticate User
+import router from './routes/authRoutes.js'
 //middleware
 import notFoundMiddleWare from './middleware/not-found.js'
 import errorHandlerMiddleware from './middleware/error-handler.js'
 
-
+app.use(express.json())
 app.get('/',(req,res)=>{
     //throw new Error('error')
     res.send('Welcome!')
 })
+app.use('/api/v1/auth',router)
 app.use(notFoundMiddleWare)
 app.use(errorHandlerMiddleware)
 
