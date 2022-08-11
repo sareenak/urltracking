@@ -9,7 +9,7 @@ import errorHandlerMiddleware from './middleware/error-handler.js'
 
 
 app.get('/',(req,res)=>{
-    throw new Error('error')
+    //throw new Error('error')
     res.send('Welcome!')
 })
 app.use(notFoundMiddleWare)
