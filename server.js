@@ -5,7 +5,8 @@ dotenv.config()
 //db 
 import connectDB from './db/connect.js'
 //Authenticate User
-import router from './routes/authRoutes.js'
+import authRouter from './routes/authRoutes.js'
+import urlRouter from './routes/urlRoutes.js'
 //middleware
 import notFoundMiddleWare from './middleware/not-found.js'
 import errorHandlerMiddleware from './middleware/error-handler.js'
@@ -15,7 +16,9 @@ app.get('/',(req,res)=>{
     //throw new Error('error')
     res.send('Welcome!')
 })
-app.use('/api/v1/auth',router)
+app.use('/api/v1/auth',authRouter)
+app.use('/api/v1/url',urlRouter)
+
 app.use(notFoundMiddleWare)
 app.use(errorHandlerMiddleware)
 
