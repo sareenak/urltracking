@@ -34,3 +34,5 @@ location:{
 },
 
 })
+//create the User collection with export
+export default mongoose.model('User',UserSchema)
