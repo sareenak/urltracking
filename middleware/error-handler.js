@@ -10,7 +10,10 @@ const errorHandlerMiddleware = (err,req,res,next) =>{
         //defaultError.msg=err.message
         defaultError.msg=Object.values(err.errors).map((item)=>item.message).join(',')
     }
+     if(err.code&&err.code===11000){
+        defaultError.msg=`${Object.keys(err.keyValue)} has to be unique`
+     }
     res.status(defaultError.statusCode).json({msg:defaultError.msg})
-
+    //res.status(defaultError.statusCode).json({msg:err})
 }
 export default errorHandlerMiddleware
