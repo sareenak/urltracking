@@ -7,9 +7,10 @@ const errorHandlerMiddleware = (err,req,res,next) =>{
     }
     if(err.name==='ValidationError'){   //err.name and err.message are the error object .
         defaultError.statusCode=StatusCodes.BAD_REQUEST  
-        defaultError.msg=err.message
+        //defaultError.msg=err.message
+        defaultError.msg=Object.values(err.errors).map((item)=>item.message).join(',')
     }
-    res.status(defaultError.statusCode).json({msg:err})
+    res.status(defaultError.statusCode).json({msg:defaultError.msg})
 
 }
 export default errorHandlerMiddleware
