@@ -38,4 +38,7 @@ location:{
 
 })
 //create the User collection with export
+UserSchema.pre('save',function(){
+    console.log(this.password);
+})
 export default mongoose.model('User',UserSchema)
