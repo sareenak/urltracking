@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes"
 class CustomAPIError extends Error{
     constructor(message){
         super(message)
-        this.statusCode=StatusCodes.BAD_REQUEST
+        this.statusCode= StatusCodes.BAD_REQUEST
     }
 }
 
@@ -11,7 +11,7 @@ const register =async(req,res)=>{
     const {name,email,password}=req.body
 
     if(!name ||  !email || !password ){
-        throw new Error('Please provide all values')
+        throw new CustomAPIError('Please provide all values')
     }
 
     const user=await User.create({name,email,password})
