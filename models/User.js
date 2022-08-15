@@ -23,6 +23,7 @@ password:{
     type:String,
     required:[true,'Please provide valid password'],
     minlength:6,
+    select:false
     
 },
 lastName:{
