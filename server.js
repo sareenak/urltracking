@@ -1,3 +1,4 @@
+import cors from 'cors'
 import express from 'express'
 const app=express()
 import dotenv from 'dotenv'
@@ -12,11 +13,11 @@ import urlRouter from './routes/urlRoutes.js'
 //middleware
 import notFoundMiddleWare from './middleware/not-found.js'
 import errorHandlerMiddleware from './middleware/error-handler.js'
-
+app.use(cors())
 app.use(express.json())
 app.get('/',(req,res)=>{
     //throw new Error('error')
-    res.send('Welcome!')
+    res.json({msg:'Welcome!'})
 })
 app.use('/api/v1/auth',authRouter)
 app.use('/api/v1/url',urlRouter)
@@ -33,7 +34,7 @@ const start=async()=>{
         await connectDB(process.env.MONGO_URL)
         app.listen(port,()=>{
             console.log(`Server is listening on port ${port}...`)
-            console.log('hii')
+            //console.log('hii')
         })
 
     } catch (error) {
