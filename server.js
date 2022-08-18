@@ -14,7 +14,9 @@ import urlRouter from './routes/urlRoutes.js'
 //middleware
 import notFoundMiddleWare from './middleware/not-found.js'
 import errorHandlerMiddleware from './middleware/error-handler.js'
-
+if(process.env.NOD_ENV !=='production'){
+    app.use(morgan('dev'))
+}
 app.use(express.json())
 app.get('/',(req,res)=>{
     //throw new Error('error')
