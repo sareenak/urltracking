@@ -4,6 +4,7 @@ const app=express()
 import dotenv from 'dotenv'
 dotenv.config()
 import 'express-async-errors'
+import morgan from 'morgan'
 
 //db 
 import connectDB from './db/connect.js'
