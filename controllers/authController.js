@@ -1,6 +1,10 @@
 import User from "../models/User.js"
 import { StatusCodes } from "http-status-codes"
 import {BadRequestError, UnauthenticatedError} from "../errors/index.js"
+import VerificationToken from "../models/VerificationToken.js"
+import generateOtp from "../utils/mail.js"
+
+
 
 
 const register =async(req,res)=>{
@@ -13,8 +17,14 @@ const register =async(req,res)=>{
     if(userAlreadyExist){
         throw new BadRequestError('Email already in use')
     }
+    const OTP=generateOtp()
+    
     const user=await User.create({name,email,password})
+    const verificationToken=await VerificationToken.create({owner:user._id,token:OTP})
+    
+    
     const token=user.createJWT()
+    
     res.status(StatusCodes.CREATED).json(
         {user:
         {email:user.email,
@@ -23,7 +33,7 @@ const register =async(req,res)=>{
          name:user.name},
          token})
 
-}
+        }
 const login =async(req,res)=>{
     const {email,password}=req.body
     if(!email || !password ){
