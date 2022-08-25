@@ -16,7 +16,7 @@ const verificationTokenSchema=new mongoose.Schema({
    },
    createdAt:{
     type:Date,
-    expires:3600,
+    expires:600,
     default:Date.now()
    },
 

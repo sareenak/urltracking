@@ -38,6 +38,11 @@ location:{
     trim:true,
     default:'My city'
 },
+verified:{
+    type:Boolean,
+    default:false,
+    required:true
+}
 
 
 })
