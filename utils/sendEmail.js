@@ -1,13 +1,12 @@
-import async from 'hbs/lib/async'
+
 import nodemailer from 'nodemailer'
 
-module.exports=async(email,subject,text)=>{
-    try {
-        const transporter=nodemailer.createTransport({
-            
-        })
-        
-    } catch (error) {
-        
+const sendTransport=()=> nodemailer.createTransport({
+    service:gmail,
+    port: 2525,
+    auth: {
+      user: "ada7b5f8de86f6",
+      pass: "0feab591ca385c"
     }
-}
+  });
+  

@@ -8,6 +8,7 @@ import  mongoose from "mongoose"
 
 
 
+
 const register =async(req,res)=>{
     const {name,email,password}=req.body
 
@@ -21,9 +22,10 @@ const register =async(req,res)=>{
     const OTP=generateOtp()
     
     const user=await User.create({name,email,password})
-    const verificationToken=await VerificationToken.create({owner:user._id,token:OTP})
+    const verificationToken=await VerificationToken.create({owner:user._id,otp:OTP})
+    
     mailTransport().sendMail({
-        from:'otpverification@gmail.com',
+        from:'sareenaanees111@gmail.com',
         to:user.email,
         subject:'Verify your email account',
         html:`<h1>${OTP}</h1>`
@@ -42,14 +44,15 @@ const register =async(req,res)=>{
          token})
 
         }
-        const verifyEmail=async(req,res)=>{
-            const {userId,otp}=req.body
+        const verification=async(req,res)=>{
+            const {otp,userId}=req.body
             if(!userId || !otp.trim()){
-                throw new BadRequestError('Please provide all values')
+                throw new BadRequestError('Please provide the value')
+                
             }
             
             if(!mongoose.isValidObjectId(userId)){
-                throw new UnauthenticatedError('Invalid user ')
+                throw new UnauthenticatedError('Invalid userId')
             }
             
             const user=await User.findById(userId)
@@ -57,8 +60,7 @@ const register =async(req,res)=>{
                 throw new UnauthenticatedError('Invalid Credentials')
             }
                 
-
-            if(user.verified){
+           if(user.verified){
                 throw new UnauthenticatedError('User already verified')
             }
             
@@ -77,7 +79,7 @@ const register =async(req,res)=>{
     
        await User.findByIdAndUpdate(user._id,{verified:true})
       
-        res.json({msg:'Welcome!'})
+        res.status(StatusCodes.CREATED).json({msg:'Welcome!',user:{verified:user.verified}})
         }
 const login =async(req,res)=>{
     const {email,password}=req.body
@@ -100,4 +102,4 @@ const login =async(req,res)=>{
 const updateUser =async(req,res)=>{
     res.send('update user')
 }
-export  {register,login,updateUser,verifyEmail}
+export  {register,login,updateUser,verification}

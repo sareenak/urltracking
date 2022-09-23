@@ -10,7 +10,7 @@ const verificationTokenSchema=new mongoose.Schema({
         ref:'User',
         required:true,
    },
-   token:{
+   otp:{
     type:String,
     required:true
    },
@@ -26,11 +26,11 @@ const verificationTokenSchema=new mongoose.Schema({
 verificationTokenSchema.pre('save',async function(){
    // console.log(this.password);
    const salt= await bcrypt.genSalt(10);
-   this.token=await bcrypt.hash(this.token,salt)
+   this.otp=await bcrypt.hash(this.otp,salt)
 })
 
-verificationTokenSchema.methods.compareToken=async function(token){
-    const isMatch=await bcrypt.compare(token ,this.token)
+verificationTokenSchema.methods.compareToken=async function(otp){
+    const isMatch=await bcrypt.compare(otp ,this.otp)
     return isMatch
 }
 
