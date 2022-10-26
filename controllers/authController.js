@@ -78,8 +78,8 @@ const register =async(req,res)=>{
         const verify=await VerificationToken.findByIdAndDelete(token1._id)
     
        await User.findByIdAndUpdate(user._id,{verified:true})
-      
-        res.status(StatusCodes.CREATED).json({msg:'Welcome!',user:{verified:user.verified}})
+       const token=user.createJWT()
+        res.status(StatusCodes.CREATED).json({msg:'Welcome!',user:{verified:user.verified},token})
         }
 const login =async(req,res)=>{
     const {email,password}=req.body
@@ -95,11 +95,14 @@ const login =async(req,res)=>{
     if(!isPasswordCorrect){
         throw new UnauthenticatedError('Invalid Credentials')
     }
-     const token=user.createJWT
+     const token=user.createJWT()
+    
      user.password=undefined
     res.status(StatusCodes.OK).json({user,token,location:user.location})
 }
+
 const updateUser =async(req,res)=>{
+    console.log(req.user)
     res.send('update user')
 }
 export  {register,login,updateUser,verification}
