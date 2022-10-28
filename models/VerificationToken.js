@@ -24,9 +24,9 @@ const verificationTokenSchema=new mongoose.Schema({
 })
 //create the User collection with export
 verificationTokenSchema.pre('save',async function(){
-   
- const salt= await bcrypt.genSalt(10);
-  this.otp=await bcrypt.hash(this.otp,salt)
+   // console.log(this.password);
+   const salt= await bcrypt.genSalt(10);
+   this.otp=await bcrypt.hash(this.otp,salt)
 })
 
 verificationTokenSchema.methods.compareToken=async function(otp){

@@ -78,10 +78,12 @@ const register =async(req,res)=>{
         const verify=await VerificationToken.findByIdAndDelete(token1._id)
     
        await User.findByIdAndUpdate(user._id,{verified:true})
-       const token=user.createJWT()
-        res.status(StatusCodes.CREATED).json({msg:'Welcome!',user:{verified:user.verified},token})
+      const token=user.createJWT()
+        res.status(StatusCodes.CREATED).json({msg:'Welcome!',user:{verified:user.verified}})
         }
 const login =async(req,res)=>{
+
+    
     const {email,password}=req.body
     if(!email || !password ){
         throw new BadRequestError('Please provide all values')
@@ -95,6 +97,7 @@ const login =async(req,res)=>{
     if(!isPasswordCorrect){
         throw new UnauthenticatedError('Invalid Credentials')
     }
+    
      const token=user.createJWT()
     
      user.password=undefined
