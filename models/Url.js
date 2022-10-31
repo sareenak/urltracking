@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 //setup schema
 const UrlSchema=new mongoose.Schema({
-    url:{
+    website_url:{
         type:String,
         required:[true,'Please provide valid url'],
         maxlength:100,
@@ -18,11 +18,13 @@ campaign_medium:{
     
 },
 campaign_term:{
-    type:String
+    type:String,
+    default:""
     
 },
 campaign_content:{
-    type:String
+    type:String,
+    default:''
 },
 campaign_name:{
     type:String,
@@ -33,5 +35,6 @@ createdBy:{
     ref:'User',
     required:[true,'Please provide User']
 },
+
 },{timestamps:true})
 export default mongoose.model('Url',UrlSchema)
