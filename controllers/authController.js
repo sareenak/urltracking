@@ -79,7 +79,7 @@ const register =async(req,res)=>{
     
        await User.findByIdAndUpdate(user._id,{verified:true})
       const token=user.createJWT()
-        res.status(StatusCodes.CREATED).json({msg:'Welcome!',user:{verified:user.verified}})
+        res.status(StatusCodes.CREATED).json({msg:'Welcome!',user:{verified:user.verified,name:user.name}})
         }
 const login =async(req,res)=>{
 
@@ -103,6 +103,36 @@ const login =async(req,res)=>{
      user.password=undefined
     res.status(StatusCodes.OK).json({user,token,location:user.location})
 }
+const loginAdmin=async(req,res)=>{
+   const {email,password}=req.body
+   
+   if(!email || !password ){
+    throw new BadRequestError('Please provide all values')
+}
+const email1=email==="admin@gmail.com"
+if(!email1){
+throw new BadRequestError('please provide valid email')
+}
+const user=await User.findOne({email}).select('+password')
+
+if(!user){
+    
+    throw new UnauthenticatedError('Invalid Credentials')
+}
+
+const isPasswordCorrect=await user.comparePassword(password)
+if(!isPasswordCorrect){
+    throw new UnauthenticatedError('Invalid Credentials')
+}
+
+ const token=user.createJWT()
+
+ user.password=undefined
+res.status(StatusCodes.OK).json({user,token})
+}
+
+
+
 
 const updateUser =async(req,res)=>{
     const {name,email,lastName,location} = req.body
@@ -128,4 +158,10 @@ const updateUser =async(req,res)=>{
     })
 
 }
-export  {register,login,updateUser,verification}
+//Take all users from User collection.
+const getAllUsers=async(req,res)=>{
+    const users=await User.find()
+    res.status(StatusCodes.OK).json({users})
+
+}
+export  {register,login,updateUser,verification,loginAdmin,getAllUsers}

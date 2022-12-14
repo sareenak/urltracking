@@ -2,6 +2,7 @@ import Url from "../models/Url.js"
 import { StatusCodes } from "http-status-codes"
 import {BadRequestError,NotFoundError} from '../errors/index.js'
 import { urlencoded } from "express"
+import async from "hbs/lib/async.js"
 
 const createUrl=async(req,res)=>{
    
@@ -32,7 +33,7 @@ const url =await Url.create(req.body)
 // Url.updateMany({}, {
 //     $inc: { visitersCount: 1 }
 //   }).exec()
-await Url.findByIdAndUpdate(url._id,{$inc:{visitersCount:1}}).exec()
+//await Url.findByIdAndUpdate(url._id,{$inc:{visitersCount:1}}).exec()
 res.status(StatusCodes.CREATED).json({url})
 
 
@@ -41,9 +42,15 @@ res.status(StatusCodes.CREATED).json({url})
 const deleteUrl=async(req,res)=>{
     res.send('deleteUrl')
 }
+//user
 const getAllUrls=async(req,res)=>{
     const urls=await Url.find({createdBy:req.user.userId})
 
+    res.status(StatusCodes.OK).json({urls,totalUrls: urls.length ,numberOfPages:1})
+}
+//admin
+const getAllUrl=async(req,res)=>{
+    const urls=await Url.find()
     res.status(StatusCodes.OK).json({urls,totalUrls: urls.length ,numberOfPages:1})
 }
 const updateUrl=async(req,res)=>{
@@ -54,4 +61,4 @@ const updateUrl=async(req,res)=>{
 const showStats=async(req,res)=>{
     res.send('showStats')
 }
-export {createUrl,deleteUrl,getAllUrls,updateUrl,showStats}
+export {createUrl,deleteUrl,getAllUrls,updateUrl,showStats,getAllUrl}
