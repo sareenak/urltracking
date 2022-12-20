@@ -52,4 +52,13 @@ createdBy:{
 },
 
 },{timestamps:true})
+// UrlSchema.methods.createJWT=function(){
+//     return jwt.sign({id:this._id},process.env.JWT_SECRET ,
+//         {
+//             expiresIn:process.env.JWT_LIFETIME
+            
+//         }
+//         )
+//     //console.log(this)
+// }
 export default mongoose.model('Url',UrlSchema)

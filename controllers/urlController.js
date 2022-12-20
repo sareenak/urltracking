@@ -40,6 +40,8 @@ res.status(StatusCodes.CREATED).json({url})
 
 }
 const deleteUrl=async(req,res)=>{
+    const{id}=req.params
+    await Url.findByIdAndDelete({_id:id})
     res.send('deleteUrl')
 }
 //user
@@ -51,14 +53,51 @@ const getAllUrls=async(req,res)=>{
 //admin
 const getAllUrl=async(req,res)=>{
     const urls=await Url.find()
+    
     res.status(StatusCodes.OK).json({urls,totalUrls: urls.length ,numberOfPages:1})
 }
-const updateUrl=async(req,res)=>{
-    res.send('updateUrl')
-}
+// const visiterCount=async(req,res)=>{
+    
+// }
+ const updateUrl=async(req,res)=>{
+
+    const {id:urlId}=req.params
+    //const {websiteUrl,campaignName}=req.body
+    // if(!websiteUrl || !campaignName){
+    //     throw new BadRequestError('please provide all values')
+    // }
+    // const url=await Url.find()
+    // if(url._id===urlId){
+    //     throw new NotFoundError(`No url with id${urlId}`)
+    // }
+    const count=await Url.findByIdAndUpdate({_id:urlId},{$inc:{visitersCount:1}},
+        {new:true,runValidators:true,})
+    if(!count){
+        throw new NotFoundError(`No url with id${urlId}`)
+    }
+
+    //update permission
+    // const updateUrl=await Url.findByIdAndUpdate({_id:urlId},req.body,{
+    //     new:true,
+    //     runValidators:true,
+    // })
+
+   
+     res.status(StatusCodes.OK).json({count})
+ }
+ const handleRedirect=async(req,res)=>{
+    const {id:urlId}=req.params
+    const url=await Url.findOne({url_uid:urlId})
+    if(!url){
+        throw new NotFoundError(`No url with id${urlId}`)
+    }  
+    const websiteUrl=url.websiteUrl
+    res.status(StatusCodes.OK).json({websiteUrl})
+
+ }
 
 
 const showStats=async(req,res)=>{
     res.send('showStats')
 }
-export {createUrl,deleteUrl,getAllUrls,updateUrl,showStats,getAllUrl}
+export {createUrl,deleteUrl,getAllUrls,updateUrl,showStats,getAllUrl,handleRedirect}
